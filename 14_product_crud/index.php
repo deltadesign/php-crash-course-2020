@@ -37,8 +37,9 @@ function clean_date($t) // cleans up the date format
 
   <title>Project CRUD</title>
 </head>
+<h1>Products</h1>
 <p>
-  <button class="btn btn-sm btn-success">Create Product</button>
+  <a href="create.php" class="btn btn-sm btn-success">Create Product</a>
 </p>
 
 <body>
