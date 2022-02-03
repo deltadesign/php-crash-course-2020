@@ -27,22 +27,22 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error 
 
 <body>
 
-    <form>
-        <div class="mb-3">
+    <form action="create.php" method="get">
+        <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Image</label>
-            <input type="file" class="form-control">
+            <input type="file" name="image" class="form-control">
         </div>
-        <div class="mb-3">
+        <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control">
+            <input type="text" name="title" class="form-control">
         </div>
-        <div class="mb-3">
+        <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Description</label>
-            <textarea rows="5" class="form-control"></textarea>
+            <textarea rows="5" name="product_descripton" class="form-control"></textarea>
         </div>
-        <div class="mb-3">
+        <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Price</label>
-            <input type="number" step=".01" class="form-control">
+            <input type="number" step=".01" name="price" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
