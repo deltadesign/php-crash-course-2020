@@ -1,3 +1,28 @@
+<?php
+
+$pdo = new PDO('mysql:host=localhost;port=3306;dbname=prod_crud', 'root', ''); // new PDO('dnsString','port','dbname','user','password');
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error occurs throw an exception
+
+
+$statement = $pdo->prepare('SELECT * FROM PRODUCTS ORDER BY created_date DESC'); //prepare the statement to be executed on the database
+
+$statement->execute(); // execute the statement
+
+$products = $statement->fetchAll(PDO::FETCH_ASSOC); // fetch eachh record as an associative array and store this a the products variable;
+
+// echo '<pre>';
+// var_dump($products);
+// echo '<pre>';
+
+function clean_date($t) // cleans up the date format
+{
+  $t = strtotime($t);
+  return date('d-M-Y', $t);
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,35 +37,37 @@
 
   <title>Project CRUD</title>
 </head>
+<p>
+  <button class="btn btn-sm btn-success">Create Product</button>
+</p>
 
 <body>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Image</th>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Create Date</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      <?php foreach ($products as $product) : ?>
+        <tr>
+          <th scope="row"><?php echo $product['id'] ?></th>
+          <td><?php echo $product['img'] ?></td>
+          <td><?php echo $product['title'] ?></td>
+          <td><?php echo $product['price'] ?></td>
+          <td><?php echo clean_date($product['created_date']) ?></td>
+          <td>
+            <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+          </td>
+        </tr>
+
+      <?php endforeach; ?>
     </tbody>
   </table>
 
