@@ -3,7 +3,6 @@
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=prod_crud', 'root', ''); // new PDO('dnsString','port','dbname','user','password');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error occurs throw an exception
 
-
 # you can access query strings in the URL by using the SUPERGLOBAL $_GET['key'];
 // echo '<pre>';
 // var_dump($_GET);
@@ -19,7 +18,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error 
 // echo '<pre>';
 // var_dump($_SERVER);
 // echo '<pre>';
-// die;
+// die; // kills the code here too
 
 $errors = [];
 
@@ -66,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,9 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
     <link rel="stylesheet" href="app.css">
 
     <title>Create New Product</title>
@@ -115,7 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
 
 </body>
 
