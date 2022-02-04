@@ -8,7 +8,7 @@ $statement = $pdo->prepare('SELECT * FROM PRODUCTS ORDER BY created_date DESC');
 
 $statement->execute(); // execute the statement
 
-$products = $statement->fetchAll(PDO::FETCH_ASSOC); // fetch eachh record as an associative array and store this a the products variable;
+$products = $statement->fetchAll(PDO::FETCH_ASSOC); // fetch each record as an associative array and store this a the products variable;
 
 // echo '<pre>';
 // var_dump($products);
@@ -46,7 +46,7 @@ function clean_date($t) // cleans up the date format
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col">ID</th>
         <th scope="col">Image</th>
         <th scope="col">Title</th>
         <th scope="col">Price</th>
@@ -57,10 +57,10 @@ function clean_date($t) // cleans up the date format
     <tbody>
       <?php foreach ($products as $product) : ?>
         <tr>
-          <th scope="row"><?php echo $product['id'] ?></th>
-          <td><?php echo $product['img'] ?></td>
-          <td><?php echo $product['title'] ?></td>
-          <td><?php echo $product['price'] ?></td>
+          <th scope="row"><?php echo $product['id']; ?></th>
+          <td><?php echo $product['img']; ?></td>
+          <td><?php echo $product['title']; ?></td>
+          <td><?php echo $product['price']; ?></td>
           <td><?php echo clean_date($product['created_date']) ?></td>
           <td>
             <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
