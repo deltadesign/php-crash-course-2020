@@ -21,6 +21,13 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error 
 // echo '<pre>';
 // die;
 
+$errors = [];
+
+$image       = '';
+$title       = '';
+$description = '';
+$price       = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY DEFAULT - ONLY RUN THIS CODE IF THE METHOD IS SET TO POST
     $image       = $_POST['image'];
     $title       = $_POST['title'];
@@ -28,20 +35,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
     $price       = $_POST['price'];
     $date        = date('Y-m-d H:i:s');
 
+    if (!$title) {
+        $errors[] = 'Please add the product title';
+    }
+
+    if (!$price) {
+        $errors[] = 'Please add the product price';
+    }
+
     # DO NOT USE EXEC DIRECTLY - INCREASED POTENTIAL FOR SQL INJECTION, ALSO USED NAMED PARAMETERS NOT VARIABLES eg:- :title :description :price
     // $pdo->prepare("INSERT INTO products (img, title, description, price, created_date) 
     //                VALUES ('', '$title', '$description', $price,'$date')
     //                ")
-
-    $statement = $pdo->prepare("INSERT INTO products(img, title, description, price, created_date)
+    if (empty($errors)) {
+        $statement = $pdo->prepare("INSERT INTO products(img, title, description, price, created_date)
                  VALUES (:img, :title, :description, :price, :date )");
 
-    $statement->bindValue(':img', $image);
-    $statement->bindValue(':title', $title);
-    $statement->bindValue(':description', $description);
-    $statement->bindValue(':price', $price);
-    $statement->bindValue(':date', $date);
-    $statement->execute();
+        $statement->bindValue(':img', $image);
+        $statement->bindValue(':title', $title);
+        $statement->bindValue(':description', $description);
+        $statement->bindValue(':price', $price);
+        $statement->bindValue(':date', $date);
+        $statement->execute();
+    }
+
+    $image       = '';
+    $title       = '';
+    $description = '';
+    $price       = '';
 }
 ?>
 
@@ -66,24 +87,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
 </p>
 
 <body>
+    <?php if (!empty($errors)) : ?>
+        <div class="alert alert-danger col-sm-12 col-md-6">
+            <?php foreach ($errors as $error) : ?>
+                <div class="mb-1"><?php echo $error; ?></div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
     <!-- ACTION Describes where the form is submitted to ;  METHOD describes how the form is submitted using GET (THE DEFAULT OF FORMS) will parse the values as query strings in the URL -->
     <!-- <form action="create.php" method="get"> -->
     <form action="create.php" method="post">
         <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Image</label>
-            <input type="file" name="image" class="form-control">
+            <input type="file" name="image" class="form-control" value="<?= $image ?>">
         </div>
         <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Title</label>
-            <input type="text" name="title" class="form-control">
+            <input type="text" name="title" class="form-control" value="<?= $title ?>">
         </div>
         <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Description</label>
-            <textarea rows="5" name="product_descripton" class="form-control"></textarea>
+            <textarea rows="5" name="product_descripton" class="form-control"><?= $description ?></textarea>
         </div>
         <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Price</label>
-            <input type="number" step=".01" name="price" class="form-control">
+            <input type="number" step=".01" name="price" class="form-control" value="<?= $price ?>">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
