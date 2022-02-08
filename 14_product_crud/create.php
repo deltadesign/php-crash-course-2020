@@ -14,7 +14,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error 
 // echo '<pre>';
 // exit; //kills the code
 
-# SUPER GLOBAL $_SERVER
+# SUPER GLOBAL $_SERVER // SUPER GLOBALS are available everywhere in the code.  
 // echo '<pre>';
 // var_dump($_SERVER);
 // echo '<pre>';
