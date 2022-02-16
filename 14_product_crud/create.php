@@ -3,6 +3,11 @@
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=prod_crud', 'root', ''); // new PDO('dnsString','port','dbname','user','password');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error occurs throw an exception
 
+echo '<pre>';
+var_dump($_FILES); // $_SUPERGLOBAL that shows the files uploaded;
+echo '<pre>';
+die;
+
 # you can access query strings in the URL by using the SUPERGLOBAL $_GET['key'];
 // echo '<pre>';
 // var_dump($_GET);
@@ -92,7 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
     <?php endif; ?>
     <!-- ACTION Describes where the form is submitted to ;  METHOD describes how the form is submitted using GET (THE DEFAULT OF FORMS) will parse the values as query strings in the URL -->
     <!-- <form action="create.php" method="get"> -->
-    <form action="create.php" method="post">
+    <form action="create.php" method="post" enctype="multipart/form-data">
+        <!-- enctype for loading files -->
         <div class="col-sm-12 col-md-6 mb-3">
             <label class="form-label">Product Image</label>
             <input type="file" name="image" class="form-control" value="<?= $image ?>">
