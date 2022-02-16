@@ -3,10 +3,10 @@
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=prod_crud', 'root', ''); // new PDO('dnsString','port','dbname','user','password');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error occurs throw an exception
 
-echo '<pre>';
-var_dump($_FILES); // $_SUPERGLOBAL that shows the files uploaded;
-echo '<pre>';
-die;
+// echo '<pre>';
+// var_dump($_FILES); // $_SUPERGLOBAL that shows the files uploaded;
+// echo '<pre>';
+// die;
 
 # you can access query strings in the URL by using the SUPERGLOBAL $_GET['key'];
 // echo '<pre>';
@@ -33,7 +33,7 @@ $description = '';
 $price       = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY DEFAULT - ONLY RUN THIS CODE IF THE METHOD IS SET TO POST
-    $image       = $_POST['image'];
+    // $image       = $_POST['image'];
     $title       = $_POST['title'];
     $description = $_POST['product_descripton'];
     $price       = $_POST['price'];
@@ -47,26 +47,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
         $errors[] = 'Please add the product price';
     }
 
+    //CREATING A DIRECTORY FOR IMAGES;
+
+    if (!is_dir('images')) { # if no dir called images exists - create one
+        mkdir('images');
+    }
+
     # DO NOT USE EXEC DIRECTLY - INCREASED POTENTIAL FOR SQL INJECTION, ALSO USED NAMED PARAMETERS NOT VARIABLES eg:- :title :description :price
     // $pdo->prepare("INSERT INTO products (img, title, description, price, created_date) 
     //                VALUES ('', '$title', '$description', $price,'$date')
     //                ")
+
     if (empty($errors)) {
+
+        $image = $_FILES['image'] ?? null;
+        $imagePath = '';
+        if ($image && $image['tmp_name']) {
+
+            $imagePath = 'images/' . randomString(5) . '/' . $image['name']; // creates a randomly named folder to store the images;
+
+            mkdir(dirname($imagePath)); # makes a directory inside images for the file
+
+            move_uploaded_file($image['tmp_name'], $imagePath); // moves the file from the temp location to the new directory;
+        }
+
         $statement = $pdo->prepare("INSERT INTO products(img, title, description, price, created_date)
                  VALUES (:img, :title, :description, :price, :date )");
 
-        $statement->bindValue(':img', $image);
+        $statement->bindValue(':img', $imagePath);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':description', $description);
         $statement->bindValue(':price', $price);
         $statement->bindValue(':date', $date);
         $statement->execute();
+
+        header('Location: index.php'); //redirects user to index.php
     }
 
-    $image       = '';
-    $title       = '';
-    $description = '';
-    $price       = '';
+
+    // $image       = '';
+    // $title       = '';
+    // $description = '';
+    // $price       = '';
+}
+
+function randomString($n) # GENERATES A RANDOM STR $n characters long;
+{
+    $chars = 'qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM';
+    $str = '';
+    for ($i = 0; $i < $n; $i++) {
+        $index = rand(0, strlen($chars) - 1);
+        $str .= $chars[$index];
+    }
+
+    return $str;
 }
 ?>
 

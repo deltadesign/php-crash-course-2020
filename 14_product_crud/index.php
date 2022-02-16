@@ -54,7 +54,7 @@ function clean_date($t) // cleans up the date format
       <?php foreach ($products as $product) : ?>
         <tr>
           <th scope="row"><?php echo $product['id']; ?></th>
-          <td><?php echo $product['img']; ?></td>
+          <td><img src="<?php echo $product['img']; ?>" alt="" class="prod-img"></td>
           <td><?php echo $product['title']; ?></td>
           <td><?php echo $product['price']; ?></td>
           <td><?php echo clean_date($product['created_date']) ?></td>
