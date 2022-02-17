@@ -137,9 +137,9 @@ function randomString($n) # GENERATES A RANDOM STR $n characters long;
   <?php endif; ?>
   <!-- ACTION Describes where the form is submitted to ;  METHOD describes how the form is submitted using GET (THE DEFAULT OF FORMS) will parse the values as query strings in the URL -->
   <!-- <form action="create.php" method="get"> -->
-  <form action="" method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data">
     <?php if ($product['img']) : ?>
-      <img src="<?php echo $product['img']; ?>" alt="" class="prod-img-edit">
+      <img src="<?php echo $product['img']; ?>" alt="<?php echo $product['description']; ?>" class="prod-img-edit">
     <?php endif; ?>
 
     <!-- enctype for loading files -->
