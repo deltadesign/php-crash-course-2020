@@ -59,7 +59,7 @@ function clean_date($t) // cleans up the date format
           <td><?php echo $product['price']; ?></td>
           <td><?php echo clean_date($product['created_date']) ?></td>
           <td>
-            <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
+            <a href="update.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary">Edit</a>
             <!-- use the href to pass a query string with the ID -->
             <form class="inner-form" action="delete.php" method="post">
               <input type="hidden" name="id" value="<?= $product['id'] ?>">

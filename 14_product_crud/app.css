@@ -13,6 +13,11 @@ body {
   height: auto;
 }
 
+.prod-img-edit {
+  width: 80px;
+  height: auto;
+}
+
 .inner-form {
   display: inline-block;
 }
