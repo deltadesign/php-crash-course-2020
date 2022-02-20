@@ -3,7 +3,16 @@
 $pdo = new PDO('mysql:host=localhost;port=3306;dbname=prod_crud', 'root', ''); // new PDO('dnsString','port','dbname','user','password');
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error occurs throw an exception
 
-$statement = $pdo->prepare('SELECT * FROM PRODUCTS ORDER BY created_date DESC'); //prepare the statement to be executed on the database
+$search = $_GET['search'] ?? '';
+
+if ($search) {
+  $statement = $pdo->prepare('SELECT * FROM PRODUCTS WHERE title LIKE :search ORDER BY created_date DESC');
+  $statement->bindValue(':search', "%$search%"); #% signs needed for the mySQL search of LIKE to work.
+} else {
+
+  $statement = $pdo->prepare('SELECT * FROM PRODUCTS ORDER BY created_date DESC'); //prepare the statement to be executed on the database
+
+}
 
 $statement->execute(); // execute the statement
 
@@ -33,16 +42,26 @@ function clean_date($t) // cleans up the date format
 
   <title>Project CRUD</title>
 </head>
-<h1>Products</h1>
-<p>
-  <a href="create.php" class="btn btn-sm btn-success">Create Product</a>
-</p>
 
 <body>
+
+  <h1>Products</h1>
+
+  <p>
+    <a href="create.php" class="btn btn-sm btn-success">Create Product</a>
+  </p>
+
+  <form class="col-sm-6">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search for products" name="search" value="<?php echo $search; ?>">
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </div>
+  </form>
+
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">ID</th>
+        <th scope="col">#</th>
         <th scope="col">Image</th>
         <th scope="col">Title</th>
         <th scope="col">Price</th>
@@ -51,12 +70,12 @@ function clean_date($t) // cleans up the date format
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($products as $product) : ?>
+      <?php foreach ($products as $index => $product) : ?>
         <tr>
-          <th scope="row"><?php echo $product['id']; ?></th>
+          <th scope="row"><?php echo $index + 1; ?></th>
           <td><img src="<?php echo $product['img']; ?>" alt="" class="prod-img"></td>
           <td><?php echo $product['title']; ?></td>
-          <td><?php echo $product['price']; ?></td>
+          <td>£<?php echo $product['price']; ?></td>
           <td><?php echo clean_date($product['created_date']) ?></td>
           <td>
             <a href="update.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary">Edit</a>
