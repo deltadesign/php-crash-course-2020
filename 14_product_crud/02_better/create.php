@@ -1,7 +1,7 @@
 <?php
 
-$pdo = new PDO('mysql:host=localhost;port=3306;dbname=prod_crud', 'root', ''); // new PDO('dnsString','port','dbname','user','password');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // when an error occurs throw an exception
+require_once 'database.php';
+require_once 'functions.php';
 
 // echo '<pre>';
 // var_dump($_FILES); // $_SUPERGLOBAL that shows the files uploaded;
@@ -31,6 +31,13 @@ $image       = '';
 $title       = '';
 $description = '';
 $price       = '';
+
+$product     = [
+    'img'         => '',
+    'title'         => '',
+    'description'   => '',
+    'price'         => '',
+];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY DEFAULT - ONLY RUN THIS CODE IF THE METHOD IS SET TO POST
     // $image       = $_POST['image'];
@@ -91,17 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
     // $price       = '';
 }
 
-function randomString($n) # GENERATES A RANDOM STR $n characters long;
-{
-    $chars = 'qwertyuiopasdfghjklzxcvbnm0123456789QWERTYUIOPASDFGHJKLZXCVBNM';
-    $str = '';
-    for ($i = 0; $i < $n; $i++) {
-        $index = rand(0, strlen($chars) - 1);
-        $str .= $chars[$index];
-    }
-
-    return $str;
-}
 ?>
 
 <?php include_once 'views/partials/header.php'; ?>
@@ -112,34 +108,5 @@ function randomString($n) # GENERATES A RANDOM STR $n characters long;
     <a href="index.php" class="btn btn-sm btn-success">View Products</a>
 </p>
 
-<?php if (!empty($errors)) : ?>
-    <div class="alert alert-danger col-sm-12 col-md-6">
-        <?php foreach ($errors as $error) : ?>
-            <div class="mb-1"><?php echo $error; ?></div>
-        <?php endforeach; ?>
-    </div>
-<?php endif; ?>
-<!-- ACTION Describes where the form is submitted to ;  METHOD describes how the form is submitted using GET (THE DEFAULT OF FORMS) will parse the values as query strings in the URL -->
-<!-- <form action="create.php" method="get"> -->
-<form action="create.php" method="post" enctype="multipart/form-data">
-    <!-- enctype for loading files -->
-    <div class="col-sm-12 col-md-6 mb-3">
-        <label class="form-label">Product Image</label>
-        <input type="file" name="image" class="form-control" value="<?= $image ?>">
-    </div>
-    <div class="col-sm-12 col-md-6 mb-3">
-        <label class="form-label">Title</label>
-        <input type="text" name="title" class="form-control" value="<?= $title ?>">
-    </div>
-    <div class="col-sm-12 col-md-6 mb-3">
-        <label class="form-label">Product Description</label>
-        <textarea rows="5" name="product_descripton" class="form-control"><?= $description ?></textarea>
-    </div>
-    <div class="col-sm-12 col-md-6 mb-3">
-        <label class="form-label">Product Price</label>
-        <input type="number" step=".01" name="price" class="form-control" value="<?= $price ?>">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
+<?php include_once 'views/products/form.php' ?>
 <?php include_once 'views/partials/footer.php'; ?>
