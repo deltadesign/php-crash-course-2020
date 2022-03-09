@@ -9,7 +9,7 @@
 <!-- <form action="create.php" method="get"> -->
 <form method="post" enctype="multipart/form-data">
     <?php if ($product['img']) : ?>
-        <img src="<?php echo $product['img']; ?>" alt="<?php echo $product['description']; ?>" class="prod-img-edit">
+        <img src="/<?php echo $product['img']; ?>" alt="<?php echo $product['description']; ?>" class="prod-img-edit">
     <?php endif; ?>
 
     <!-- enctype for loading files -->

@@ -14,6 +14,10 @@
     $errors[] = 'Please add the product price';
   }
 
+  if(!is_dir(__DIR__.'/public/images')){
+    mkdir(__DIR__.'/public/images');
+  }
+
 
   if (empty($errors)) {
 
@@ -23,14 +27,14 @@
     if ($image && $image['tmp_name']) {
 
       if ($product['img']) { ## deletes the existing image
-        unlink($product['img']);
+        unlink(__DIR__.'/public/'.$product['img']);
       }
 
       $imagePath = 'images/' . randomString(5) . '/' . $image['name']; // creates a randomly named folder to store the images;
 
-      mkdir(dirname($imagePath)); # makes a directory inside images for the file
+      mkdir(dirname(__DIR__.'/public/'.$imagePath)); # makes a directory inside images for the file
 
-      move_uploaded_file($image['tmp_name'], $imagePath); // moves the file from the temp location to the new directory;
+      move_uploaded_file($image['tmp_name'],__DIR__.'/public/'.$imagePath); // moves the file from the temp location to the new directory;
     }
 
   }
