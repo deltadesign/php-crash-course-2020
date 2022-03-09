@@ -29,7 +29,7 @@
         <label class="form-label">Product Price</label>
         <input type="number" step=".01" name="price" class="form-control" value="<?= $price ?>">
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
     <a href="index.php" class="btn btn-danger">Cancel</a>
 
 </form>

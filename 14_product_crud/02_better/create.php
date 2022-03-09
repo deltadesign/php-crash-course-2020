@@ -40,45 +40,10 @@ $product     = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY DEFAULT - ONLY RUN THIS CODE IF THE METHOD IS SET TO POST
-    // $image       = $_POST['image'];
-    $title       = $_POST['title'];
-    $description = $_POST['product_descripton'];
-    $price       = $_POST['price'];
-    $date        = date('Y-m-d H:i:s');
 
-    if (!$title) {
-        $errors[] = 'Please add the product title';
-    }
+    require_once "validate_product.php";
 
-    if (!$price) {
-        $errors[] = 'Please add the product price';
-    }
-
-    //CREATING A DIRECTORY FOR IMAGES;
-
-    if (!is_dir('images')) { # if no dir called images exists - create one
-        mkdir('images');
-    }
-
-    # DO NOT USE EXEC DIRECTLY - INCREASED POTENTIAL FOR SQL INJECTION, ALSO USED NAMED PARAMETERS NOT VARIABLES eg:- :title :description :price
-    // $pdo->prepare("INSERT INTO products (img, title, description, price, created_date) 
-    //                VALUES ('', '$title', '$description', $price,'$date')
-    //                ")
-
-    if (empty($errors)) {
-
-        $image = $_FILES['image'] ?? null;
-        $imagePath = '';
-        if ($image && $image['tmp_name']) {
-
-            $imagePath = 'images/' . randomString(5) . '/' . $image['name']; // creates a randomly named folder to store the images;
-
-            mkdir(dirname($imagePath)); # makes a directory inside images for the file
-
-            move_uploaded_file($image['tmp_name'], $imagePath); // moves the file from the temp location to the new directory;
-        }
-
-        $statement = $pdo->prepare("INSERT INTO products(img, title, description, price, created_date)
+        if(empty($errors)) {$statement = $pdo->prepare("INSERT INTO products(img, title, description, price, created_date)
                  VALUES (:img, :title, :description, :price, :date )");
 
         $statement->bindValue(':img', $imagePath);
@@ -90,13 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // SERVER REQUEST METHOD IS GET BY 
 
         header('Location: index.php'); //redirects user to index.php
     }
+}
 
 
     // $image       = '';
     // $title       = '';
     // $description = '';
     // $price       = '';
-}
 
 ?>
 
